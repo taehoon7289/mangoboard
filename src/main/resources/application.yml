@@ -1,9 +1,11 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.56.1:3306/mangoboard?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.56.1:3306?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: wordpress
+    hikari:
+      schema: schema
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -11,7 +13,7 @@ spring:
     show-sql: true
     hibernate:
       format_sql: true
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
