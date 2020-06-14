@@ -4,7 +4,7 @@ package com.mpresent.mangoboard.controller.user;
 import com.mpresent.mangoboard.common.constant.exception.UserConstException;
 import com.mpresent.mangoboard.common.dto.ResultDTO;
 import com.mpresent.mangoboard.common.exception.CustomException;
-import com.mpresent.mangoboard.service.LoginService;
+import com.mpresent.mangoboard.service.user.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +29,10 @@ public class LoginController {
                          @RequestParam Optional<String> ip,
                          HttpServletRequest request, HttpServletResponse response) throws CustomException {
     // 필수값 null 체크
-    id.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_ID));
-    password.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_PASSWORD));
-    ip.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_IP));
-    loginService.login(id,password,ip);
+    String ogId = id.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_ID));
+    String ogPassword = password.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_PASSWORD));
+    String ogIp = ip.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_IP));
+    loginService.login(ogId,ogPassword,ogIp);
     return new ResultDTO(1,"",null);
   }
 

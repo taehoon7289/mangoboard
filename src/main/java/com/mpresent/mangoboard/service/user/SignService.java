@@ -1,4 +1,4 @@
-package com.mpresent.mangoboard.service;
+package com.mpresent.mangoboard.service.user;
 
 import com.mpresent.mangoboard.common.constant.exception.UserConstException;
 import com.mpresent.mangoboard.common.exception.CustomException;
@@ -24,12 +24,17 @@ public class LoginService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  public Integer login(Optional<String> id,Optional<String> password,Optional<String> ip) throws CustomException {
-    User user = userDao.findById(id.get());
-    if (Optional.ofNullable(user).isEmpty()) {
-      throw new CustomException(UserConstException.NO_MATCH_USER_ID);
-    }
-    if (!passwordEncoder.matches(password.get(),user.getPassword())) {
+  /**
+   * 회원 로그인
+   * @param id
+   * @param password
+   * @param ip
+   * @return
+   * @throws CustomException
+   */
+  public Integer login(String id,String password,String ip) throws CustomException {
+    User user = userDao.findById(id).orElseThrow(() -> new CustomException(UserConstException.NO_MATCH_USER_ID));
+    if (!passwordEncoder.matches(password,user.getPassword())) {
       throw new CustomException(UserConstException.NO_MATCH_USER_PASSWORD);
     }
     log.info("user :: {}", user);
