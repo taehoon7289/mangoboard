@@ -9,6 +9,7 @@ import com.mpresent.mangoboard.common.util.PageData;
 import com.mpresent.mangoboard.service.user.BoardService;
 import com.mpresent.mangoboard.service.user.SignService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +31,8 @@ public class BoardController {
   public ResultDTO getBoards(@RequestParam Integer page,
                              @RequestParam Integer limit,
                              HttpServletRequest request, HttpServletResponse response) throws CustomException {
-    PageData pageData = boardService.getBoards(page,limit,request,response);
-    return new ResultDTO(1,"",pageData);
+    Page result = boardService.getBoards(page,limit,request,response);
+    return new ResultDTO(1,"",result);
   }
 
   @PostMapping(value = "/")

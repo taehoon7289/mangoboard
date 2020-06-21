@@ -71,10 +71,10 @@ public class SignService {
     }
     User user = new User();
     user.setId(id);
-    user.setGender(passwordEncoder.encode(password));
+    user.setPassword(passwordEncoder.encode(password));
     user.setName(name);
     user.setGender(gender);
-    user.setPassword(phone);
+    user.setPhone(phone);
     userDao.save(user);
     return user.getUserNo();
   }
