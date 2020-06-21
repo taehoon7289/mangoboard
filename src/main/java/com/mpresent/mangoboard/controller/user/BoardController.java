@@ -27,24 +27,18 @@ public class BoardController {
   }
 
   @GetMapping(value = "/")
-  public ResultDTO getBoards(@RequestParam Optional<Integer> page,
-                             @RequestParam Optional<Integer> limit,
+  public ResultDTO getBoards(@RequestParam Integer page,
+                             @RequestParam Integer limit,
                              HttpServletRequest request, HttpServletResponse response) throws CustomException {
-    // 필수값 null 체크
-    Integer ogPage = page.orElseGet(() -> 1);
-    Integer ogLimit = limit.orElseGet(() -> 10);
-    PageData pageData = boardService.getBoards(ogPage,ogLimit,request,response);
+    PageData pageData = boardService.getBoards(page,limit,request,response);
     return new ResultDTO(1,"",pageData);
   }
 
   @PostMapping(value = "/")
-  public ResultDTO setBoard(@RequestParam Optional<String> title,
-                            @RequestParam Optional<String> contents) throws CustomException {
-    // 필수값 null 체크
-    String ogTitle = title.orElseThrow(() -> new CustomException(BoardConstException.INVALID_BOARD_TITLE));
-    String ogContents = contents.orElseThrow(() -> new CustomException(BoardConstException.INVALID_BOARD_CONTENTS));
-    Integer result = boardService.setBoard(ogTitle,ogContents);
-    return new ResultDTO(1,"",null);
+  public ResultDTO setBoard(@RequestParam String title,
+                            @RequestParam String contents) throws CustomException {
+    Integer result = boardService.setBoard(title,contents);
+    return new ResultDTO(1,"",result);
   }
 
 }

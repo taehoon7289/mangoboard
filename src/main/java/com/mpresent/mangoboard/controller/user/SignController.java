@@ -24,34 +24,23 @@ public class SignController {
   }
 
   @GetMapping(value = "/")
-  public ResultDTO signIn(@RequestParam Optional<String> id,
-                         @RequestParam Optional<String> password,
-                         @RequestParam Optional<String> ip,
-                         HttpServletRequest request, HttpServletResponse response) throws CustomException {
-    // 필수값 null 체크
-    String ogId = id.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_ID));
-    String ogPassword = password.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_PASSWORD));
-    String ogIp = ip.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_IP));
-    signService.signIn(ogId,ogPassword,ogIp);
+  public ResultDTO signIn(@RequestParam String id,
+                          @RequestParam String password,
+                          @RequestParam String ip,
+                          HttpServletRequest request, HttpServletResponse response) throws CustomException {
+    signService.signIn(id,password,ip);
     return new ResultDTO(1,"",null);
   }
 
   @PostMapping(value = "/")
-  public ResultDTO signUp(@RequestParam Optional<String> id,
-                          @RequestParam Optional<String> password,
-                          @RequestParam Optional<String> name,
-                          @RequestParam Optional<String> gender,
-                          @RequestParam Optional<String> phone,
-                          @RequestParam Optional<String> ip,
+  public ResultDTO signUp(@RequestParam String id,
+                          @RequestParam String password,
+                          @RequestParam String name,
+                          @RequestParam String gender,
+                          @RequestParam String phone,
+                          @RequestParam String ip,
                           HttpServletRequest request, HttpServletResponse response) throws CustomException {
-    // 필수값 null 체크
-    String ogId = id.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_ID));
-    String ogPassword = password.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_PASSWORD));
-    String ogName = name.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_NAME));
-    String ogGender = gender.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_GENDER));
-    String ogPhone = phone.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_PHONE));
-    String ogIp = ip.orElseThrow(() -> new CustomException(UserConstException.INVALID_USER_IP));
-    Integer result = signService.signUp(ogId,ogPassword,ogName,ogGender,ogPhone,ogIp,request,response);
+    Integer result = signService.signUp(id,password,name,gender,phone,ip,request,response);
     return new ResultDTO(1,"",result);
   }
 
