@@ -14,7 +14,7 @@ import java.util.*;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/sign")
+@RequestMapping(value = "/api/user/sign")
 public class SignController {
 
   SignService signService;
