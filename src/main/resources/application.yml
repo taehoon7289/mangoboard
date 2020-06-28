@@ -16,6 +16,8 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  jwt:
+    secret: '!mangomango@'
 
 logging:
   level:
