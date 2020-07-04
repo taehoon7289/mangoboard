@@ -25,7 +25,7 @@ public class SignLogic {
    * @param userEntity
    * @return
    */
-  public void validSignInUserEntity(String password, UserEntity userEntity) throws CustomException {
+  public void validUserEntityForSignIn(String password, UserEntity userEntity) throws CustomException {
     if (!passwordEncoder.matches(password, userEntity.getPassword())) {
       throw new CustomException(UserConstException.NO_MATCH_PASSWORD);
     }
@@ -34,9 +34,17 @@ public class SignLogic {
     }
   }
 
-  public void validSignUpUserEntity(String userId, String password, UserEntity userEntity) {
-    if (userValidation.validId(userId)) {
-
+  /**
+   * User SignUp 유효성 체크
+   * @param id
+   * @param password
+   */
+  public void validParametersForSignUp(String id, String password) throws CustomException {
+    if (!userValidation.validId(id)) {
+      throw new CustomException(UserConstException.INVALID_ID);
+    }
+    if (!userValidation.validPassword(password)) {
+      throw new CustomException(UserConstException.INVALID_PASSWORD);
     }
   }
 }

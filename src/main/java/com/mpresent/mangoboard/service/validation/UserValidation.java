@@ -21,6 +21,22 @@ public class UserValidation {
   }
 
   /**
+   * User password 유효성 체크
+   * @param password
+   * @return
+   */
+  public Boolean validPassword(String password) {
+//    1. 영문(대소문자 구분), 숫자, 특수문자 조합
+//    2. 6~12자리 사이 문자
+//    3. 같은 문자 4개 이상 사용 불가
+//    4. 비밀번호에 ID 포함 불가
+//    5. 공백문자 사용 불가
+    String regex = "^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-z])(?=.*[A-Z]).{6,12}$";
+    Matcher matcher = Pattern.compile(regex).matcher(password);
+    return matcher.matches();
+  }
+
+  /**
    * User 이메일 유효성 체크
    * @param email
    * @return

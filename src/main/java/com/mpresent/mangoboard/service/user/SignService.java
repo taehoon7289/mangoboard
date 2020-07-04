@@ -51,7 +51,7 @@ public class SignService {
                         HttpServletRequest request, HttpServletResponse response) throws CustomException {
     UserEntity userEntity = userDao.findById(id).orElseThrow(() -> new CustomException(UserConstException.NO_MATCH_ID));
     // SignIn 유효성 체크
-    signLogic.validSignInUserEntity(password,userEntity);
+    signLogic.validUserEntityForSignIn(password,userEntity);
     List<String> roles = Arrays.asList("USER");
     // token 생성
     String token = jwtTokenProvider.createToken(userEntity.getUserNo(),roles);
@@ -74,10 +74,7 @@ public class SignService {
   public Integer signUp(String id, String password, String name, String gender, String phone, String ip,
                         HttpServletRequest request, HttpServletResponse response) throws CustomException {
     // 회원가입 유효성 체크
-    // 아이디 유효성 체크
-    if (!userValidation.validId(id)) {
-      throw new CustomException(UserConstException.INVALID_ID);
-    }
+    signLogic.validParametersForSignUp(id,password);
     // 아이디 중복 체크
     if (userDao.countById(id) > 0) {
       throw new CustomException(UserConstException.ALREADY_ID);
