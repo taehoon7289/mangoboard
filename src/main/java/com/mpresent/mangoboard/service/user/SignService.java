@@ -3,16 +3,19 @@ package com.mpresent.mangoboard.service.user;
 import com.mpresent.mangoboard.common.constant.code.UserCode;
 import com.mpresent.mangoboard.common.constant.exception.UserConstException;
 import com.mpresent.mangoboard.common.exception.CustomException;
+import com.mpresent.mangoboard.common.token.JwtTokenProvider;
 import com.mpresent.mangoboard.hibernate.dao.UserDao;
-import com.mpresent.mangoboard.hibernate.entity.User;
+import com.mpresent.mangoboard.hibernate.entity.UserEntity;
+import com.mpresent.mangoboard.service.user.logic.SignLogic;
+import com.mpresent.mangoboard.service.validation.UserValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -20,11 +23,20 @@ public class SignService {
 
   UserDao userDao;
   PasswordEncoder passwordEncoder;
+  JwtTokenProvider jwtTokenProvider;
+  SignLogic signLogic;
+  UserValidation userValidation;
 
   SignService(UserDao userDao,
-              PasswordEncoder passwordEncoder) {
+              PasswordEncoder passwordEncoder,
+              JwtTokenProvider jwtTokenProvider,
+              SignLogic signLogic,
+              UserValidation userValidation) {
     this.userDao = userDao;
     this.passwordEncoder = passwordEncoder;
+    this.jwtTokenProvider = jwtTokenProvider;
+    this.signLogic = signLogic;
+    this.userValidation = userValidation;
   }
 
   /**
@@ -35,15 +47,15 @@ public class SignService {
    * @return
    * @throws CustomException
    */
-  public Integer signIn(String id,String password,String ip) throws CustomException {
-    User user = userDao.findById(id).orElseThrow(() -> new CustomException(UserConstException.NO_MATCH_USER_ID));
-    if (!passwordEncoder.matches(password,user.getPassword())) {
-      throw new CustomException(UserConstException.NO_MATCH_USER_PASSWORD);
-    }
-    if (user.getStatus() != UserCode.status.ACTIVE.getValue()) {
-      throw new CustomException(UserConstException.INACTIVE_USER_STATUS);
-    }
+  public Integer signIn(String id,String password,String ip,
+                        HttpServletRequest request, HttpServletResponse response) throws CustomException {
+    UserEntity userEntity = userDao.findById(id).orElseThrow(() -> new CustomException(UserConstException.NO_MATCH_ID));
+    // SignIn 유효성 체크
+    signLogic.validSignInUserEntity(password,userEntity);
+    List<String> roles = Arrays.asList("USER");
     // token 생성
+    String token = jwtTokenProvider.createToken(userEntity.getUserNo(),roles);
+    log.info("token :: {}", token);
     return 1;
   }
 
@@ -61,22 +73,27 @@ public class SignService {
    */
   public Integer signUp(String id, String password, String name, String gender, String phone, String ip,
                         HttpServletRequest request, HttpServletResponse response) throws CustomException {
+    // 회원가입 유효성 체크
+    // 아이디 유효성 체크
+    if (!userValidation.validId(id)) {
+      throw new CustomException(UserConstException.INVALID_ID);
+    }
     // 아이디 중복 체크
     if (userDao.countById(id) > 0) {
-      throw new CustomException(UserConstException.ALREADY_USER_ID);
+      throw new CustomException(UserConstException.ALREADY_ID);
     }
     // 휴대폰번호 중복 체크
     if (userDao.countByPhone(phone) > 0) {
-      throw new CustomException(UserConstException.ALREADY_USER_PHONE);
+      throw new CustomException(UserConstException.ALREADY_PHONE);
     }
-    User user = new User();
-    user.setId(id);
-    user.setPassword(passwordEncoder.encode(password));
-    user.setName(name);
-    user.setGender(gender);
-    user.setPhone(phone);
-    userDao.save(user);
-    return user.getUserNo();
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(id);
+    userEntity.setPassword(passwordEncoder.encode(password));
+    userEntity.setName(name);
+    userEntity.setGender(gender);
+    userEntity.setPhone(phone);
+    userDao.save(userEntity);
+    return userEntity.getUserNo();
   }
 
 }

@@ -26,9 +26,9 @@ public class SignController {
   @GetMapping(value = "/")
   public ResultDTO signIn(@RequestParam String id,
                           @RequestParam String password,
-                          @RequestParam String ip,
+                          @RequestParam(required = false) String ip,
                           HttpServletRequest request, HttpServletResponse response) throws CustomException {
-    signService.signIn(id,password,ip);
+    signService.signIn(id,password,ip,request,response);
     return new ResultDTO(1,"",null);
   }
 
@@ -38,7 +38,7 @@ public class SignController {
                           @RequestParam String name,
                           @RequestParam String gender,
                           @RequestParam String phone,
-                          @RequestParam String ip,
+                          @RequestParam(required = false) String ip,
                           HttpServletRequest request, HttpServletResponse response) throws CustomException {
     Integer result = signService.signUp(id,password,name,gender,phone,ip,request,response);
     return new ResultDTO(1,"",result);

@@ -1,20 +1,15 @@
 package com.mpresent.mangoboard.controller.user;
 
 
-import com.mpresent.mangoboard.common.constant.exception.BoardConstException;
-import com.mpresent.mangoboard.common.constant.exception.UserConstException;
 import com.mpresent.mangoboard.common.dto.ResultDTO;
 import com.mpresent.mangoboard.common.exception.CustomException;
-import com.mpresent.mangoboard.common.util.PageData;
 import com.mpresent.mangoboard.service.user.BoardService;
-import com.mpresent.mangoboard.service.user.SignService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 @Slf4j
 @RestController

@@ -1,6 +1,5 @@
 package com.mpresent.mangoboard.common.constant.config;
 
-import com.mpresent.mangoboard.common.token.JwtAuthenticationFilter;
 import com.mpresent.mangoboard.common.token.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +21,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     this.jwtTokenProvider = jwtTokenProvider;
   }
 
-  @Bean
-  @Override
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
-  }
-
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
@@ -39,9 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/user/sign/**").permitAll()
             .antMatchers("/api/user/**").hasRole("USER")
             .antMatchers("/api/admin/sign/**").permitAll()
-            .antMatchers("/api/admin/**").hasRole("ADMIN")
-            .and()
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+            .antMatchers("/api/admin/**").hasRole("ADMIN");
   }
 
   @Override // ignore check swagger resource

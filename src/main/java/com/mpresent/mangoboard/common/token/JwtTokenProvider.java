@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
@@ -27,9 +28,9 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
   @Value("spring.jwt.secret")
   private String secretKey;
 
-  private long tokenValidMilisecond = 1000L * 60; // 1분만 토큰 유효
-
-  private final UserDetailsService userDetailsService;
+  private final long tokenValidMilisecond = 1000L * 60; // 1분만 토큰 유효
+  public final String TOKEN_PREFIX = "Bearer ";
+  public final String HEADER_STRING = "Authorization";
 
   @PostConstruct
   protected void init() {
@@ -37,10 +38,10 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
   }
 
   // Jwt 토큰 생성
-  public String createToken(String userNo, List<String> roles, UserTokenDTO userTokenDTO) {
-    Claims claims = Jwts.claims().setSubject(userNo);
+  public String createToken(Integer userNo, List<String> roles) {
+    Claims claims = Jwts.claims().setSubject(userNo.toString());
     claims.put("roles", roles);
-    claims.put("data", userTokenDTO);
+//    claims.put("data", userTokenDTO);
     Date now = new Date();
     return Jwts.builder()
             .setClaims(claims) // 데이터
@@ -51,10 +52,10 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
   }
 
   // Jwt 토큰으로 인증 정보를 조회
-  public Authentication getAuthentication(String token) {
-    UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserNo(token));
-    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-  }
+//  public Authentication getAuthentication(String token) {
+//    UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserNo(token));
+//    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+//  }
 
   // Jwt 토큰에서 회원 구별 정보 추출
   public String getUserNo(String token) {
@@ -74,5 +75,9 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
     } catch (Exception e) {
       return false;
     }
+  }
+
+  public UserTokenDTO getData(String token) {
+    return (UserTokenDTO) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("data");
   }
 }
