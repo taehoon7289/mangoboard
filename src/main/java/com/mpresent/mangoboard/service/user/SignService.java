@@ -2,6 +2,7 @@ package com.mpresent.mangoboard.service.user;
 
 import com.mpresent.mangoboard.common.constant.code.UserCode;
 import com.mpresent.mangoboard.common.constant.exception.UserConstException;
+import com.mpresent.mangoboard.common.dto.user.UserTokenDTO;
 import com.mpresent.mangoboard.common.exception.CustomException;
 import com.mpresent.mangoboard.common.token.JwtTokenProvider;
 import com.mpresent.mangoboard.hibernate.dao.UserDao;
@@ -47,16 +48,16 @@ public class SignService {
    * @return
    * @throws CustomException
    */
-  public Integer signIn(String id,String password,String ip,
-                        HttpServletRequest request, HttpServletResponse response) throws CustomException {
+  public UserTokenDTO signIn(String id, String password, String ip,
+                             HttpServletRequest request, HttpServletResponse response) throws CustomException {
     UserEntity userEntity = userDao.findById(id).orElseThrow(() -> new CustomException(UserConstException.NO_MATCH_ID));
     // SignIn 유효성 체크
     signLogic.validUserEntityForSignIn(password,userEntity);
-    List<String> roles = Arrays.asList("USER");
-    // token 생성
-    String token = jwtTokenProvider.createToken(userEntity.getUserNo(),roles);
-    log.info("token :: {}", token);
-    return 1;
+    // userTokenDTO 생성
+    UserTokenDTO userTokenDTO = signLogic.createUserTokenDTO(userEntity);
+    // Token 생성후 response header 추가
+    signLogic.addHeaderToken(userTokenDTO,request,response);
+    return userTokenDTO;
   }
 
   /**

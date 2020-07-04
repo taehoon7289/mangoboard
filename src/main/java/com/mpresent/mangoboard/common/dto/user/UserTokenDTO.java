@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class UserTokenDTO {
   Integer userNo;
-  Integer userName;
+  String userName;
+  Integer status;
 }

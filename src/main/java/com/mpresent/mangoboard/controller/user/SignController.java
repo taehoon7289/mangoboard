@@ -3,6 +3,7 @@ package com.mpresent.mangoboard.controller.user;
 
 import com.mpresent.mangoboard.common.constant.exception.UserConstException;
 import com.mpresent.mangoboard.common.dto.ResultDTO;
+import com.mpresent.mangoboard.common.dto.user.UserTokenDTO;
 import com.mpresent.mangoboard.common.exception.CustomException;
 import com.mpresent.mangoboard.service.user.SignService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,9 @@ public class SignController {
                           @RequestParam String password,
                           @RequestParam(required = false) String ip,
                           HttpServletRequest request, HttpServletResponse response) throws CustomException {
-    signService.signIn(id,password,ip,request,response);
-    return new ResultDTO(1,"",null);
+    UserTokenDTO result = null;
+    result = signService.signIn(id,password,ip,request,response);
+    return new ResultDTO(1,"",result);
   }
 
   @PostMapping(value = "/")

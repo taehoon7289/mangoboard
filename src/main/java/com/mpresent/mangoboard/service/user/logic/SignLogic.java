@@ -2,22 +2,32 @@ package com.mpresent.mangoboard.service.user.logic;
 
 import com.mpresent.mangoboard.common.constant.code.UserCode;
 import com.mpresent.mangoboard.common.constant.exception.UserConstException;
+import com.mpresent.mangoboard.common.dto.user.UserTokenDTO;
 import com.mpresent.mangoboard.common.exception.CustomException;
+import com.mpresent.mangoboard.common.token.JwtTokenProvider;
 import com.mpresent.mangoboard.hibernate.entity.UserEntity;
 import com.mpresent.mangoboard.service.validation.UserValidation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@Slf4j
 @Component
 public class SignLogic {
 
   PasswordEncoder passwordEncoder;
   UserValidation userValidation;
+  JwtTokenProvider jwtTokenProvider;
 
   public SignLogic (PasswordEncoder passwordEncoder,
-                    UserValidation userValidation) {
+                    UserValidation userValidation,
+                    JwtTokenProvider jwtTokenProvider) {
     this.passwordEncoder = passwordEncoder;
     this.userValidation = userValidation;
+    this.jwtTokenProvider = jwtTokenProvider;
   }
 
   /**
@@ -46,5 +56,32 @@ public class SignLogic {
     if (!userValidation.validPassword(password)) {
       throw new CustomException(UserConstException.INVALID_PASSWORD);
     }
+  }
+
+  /**
+   * User Token 생성
+   * @param userTokenDTO
+   * @param request
+   * @param response
+   */
+  public void addHeaderToken(UserTokenDTO userTokenDTO,
+                             HttpServletRequest request, HttpServletResponse response) {
+    // token 생성
+    String token = jwtTokenProvider.createToken(userTokenDTO);
+    log.info("token :: {}", token);
+    response.setHeader("X-Auth-Token", token);
+  }
+
+  /**
+   * UserTokenDTO 생성
+   * @param userEntity
+   * @return
+   */
+  public UserTokenDTO createUserTokenDTO(UserEntity userEntity) {
+    UserTokenDTO userTokenDTO = new UserTokenDTO();
+    userTokenDTO.setUserNo(userEntity.getUserNo());
+    userTokenDTO.setUserName(userEntity.getName());
+    userTokenDTO.setStatus(userEntity.getStatus());
+    return userTokenDTO;
   }
 }

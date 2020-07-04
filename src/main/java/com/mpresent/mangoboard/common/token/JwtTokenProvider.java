@@ -1,7 +1,9 @@
 package com.mpresent.mangoboard.common.token;
 
 // import 생략
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mpresent.mangoboard.common.dto.user.UserTokenDTO;
+import com.mpresent.mangoboard.hibernate.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -38,10 +40,11 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
   }
 
   // Jwt 토큰 생성
-  public String createToken(Integer userNo, List<String> roles) {
-    Claims claims = Jwts.claims().setSubject(userNo.toString());
-    claims.put("roles", roles);
-//    claims.put("data", userTokenDTO);
+  public String createToken(UserTokenDTO userTokenDTO) {
+    Claims claims = Jwts.claims().setSubject(userTokenDTO.getUserNo().toString());
+//    claims.put("roles", roles);
+    ObjectMapper objectMapper = new ObjectMapper();
+    claims.put("data", objectMapper.convertValue(userTokenDTO,Map.class));
     Date now = new Date();
     return Jwts.builder()
             .setClaims(claims) // 데이터
