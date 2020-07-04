@@ -3,6 +3,7 @@ package com.mpresent.mangoboard.controller.user;
 
 import com.mpresent.mangoboard.common.dto.ResultDTO;
 import com.mpresent.mangoboard.common.exception.CustomException;
+import com.mpresent.mangoboard.common.token.JwtTokenProvider;
 import com.mpresent.mangoboard.service.user.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,15 +18,20 @@ import javax.servlet.http.HttpServletResponse;
 public class BoardController {
 
   BoardService boardService;
+  JwtTokenProvider jwtTokenProvider;
 
-  BoardController(BoardService boardService) {
+  BoardController(BoardService boardService,
+                  JwtTokenProvider jwtTokenProvider) {
     this.boardService = boardService;
+    this.jwtTokenProvider = jwtTokenProvider;
   }
 
   @GetMapping(value = "/")
-  public ResultDTO getBoards(@RequestParam Integer page,
+  public ResultDTO getBoards(@RequestHeader(value = "X-Auth-Token") String token,
+                             @RequestParam Integer page,
                              @RequestParam Integer limit,
                              HttpServletRequest request, HttpServletResponse response) throws CustomException {
+    log.info("token getData :: {}", jwtTokenProvider.getData(token));
     Page result = boardService.getBoards(page,limit,request,response);
     return new ResultDTO(1,"",result);
   }

@@ -1,7 +1,10 @@
 package com.mpresent.mangoboard.common.constant.intercepter;
 
+import com.mpresent.mangoboard.common.token.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -9,11 +12,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
+@Component
 public class UserHandlerInterceptor extends HandlerInterceptorAdapter {
+
+  JwtTokenProvider jwtTokenProvider;
+
+  UserHandlerInterceptor(JwtTokenProvider jwtTokenProvider) {
+    this.jwtTokenProvider = jwtTokenProvider;
+  }
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     log.info("UserHandlerInterceptor > preHandle");
+    String token = jwtTokenProvider.resolveToken(request);
+    if (ObjectUtils.isEmpty(token)) {
+      log.info("token 비어있음!!!!!!!!!!!");
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+      return false;
+    }
+    if (!jwtTokenProvider.validateToken(token)) {
+      log.info("token 만료!!!!!!!!!!!!!!");
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+      return false;
+    }
     return true;
   }
 

@@ -80,7 +80,7 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
     }
   }
 
-  public UserTokenDTO getData(String token) {
-    return (UserTokenDTO) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("data");
+  public Map getData(String token) {
+    return (Map) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("data");
   }
 }

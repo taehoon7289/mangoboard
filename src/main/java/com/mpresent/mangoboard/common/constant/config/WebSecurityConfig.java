@@ -19,11 +19,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt token으로 인증하므로 세션은 필요없으므로 생성안함.
             .and()
             .authorizeRequests()
-            .antMatchers("/**").permitAll();
-//            .antMatchers("/api/user/sign/**").permitAll()
+            .antMatchers("/api/user/**").permitAll()
 //            .antMatchers("/api/user/**").hasRole("USER")
-//            .antMatchers("/api/admin/sign/**").permitAll()
-//            .antMatchers("/api/admin/**").hasRole("ADMIN");
+            .antMatchers("/api/admin/sign/**").permitAll()
+            .antMatchers("/api/admin/**").hasRole("ADMIN");
   }
 
   @Override // ignore check swagger resource
