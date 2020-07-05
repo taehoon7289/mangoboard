@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id 'nu.studer.jooq' version '4.2'
 }
 
 group = 'com.mpresent'
@@ -23,7 +24,15 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'mysql:mysql-connector-java'
+//    jooqRuntime 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+
+    jooqRuntime 'mysql:mysql-connector-java' // jdbc driver 의존성 추가.
+    compile 'org.jooq:jooq'
+    // https://mvnrepository.com/artifact/org.jooq/jooq-codegen
+    compile group: 'org.jooq', name: 'jooq-codegen', version: '3.11.5'
+
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -40,4 +49,54 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jooq {
+    version = '3.13.1'
+    edition = 'OSS'
+    generateSchemaSourceOnCompilation = true
+    local(sourceSets.main) {
+        jdbc {
+            driver = 'com.mysql.cj.jdbc.Driver'
+            url = 'jdbc:mysql://localhost:3306/'
+            user = 'root'
+            password = '!present2@'
+            properties {
+                property {
+                    key = 'ssl'
+                    value = 'true'
+                }
+            }
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            strategy {
+                name = 'com.mpresent.mangoboard.jooq.config.CustomGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema = 'mangoBoard' // DATABASE 설정
+            }
+            generate {
+                relations = true
+                deprecated = true
+                instanceFields = true
+                generatedAnnotation = true
+                records = true
+                pojos = true
+                immutablePojos = false
+                interfaces = false
+                daos = false
+                jpaAnnotations = false
+                validationAnnotations = false
+                globalObjectReferences = true
+                fluentSetters = false
+            }
+            target {
+                packageName = 'com.mpresent.mangoboard.jooq.generate'
+                directory = 'src/main/java'
+                encoding = 'UTF-8'
+            }
+        }
+    }
 }

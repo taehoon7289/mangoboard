@@ -6,7 +6,8 @@ spring:
     password: '!present2@'
     hikari:
       schema: schema
-
+  jooq:
+    sql-dialect: mysql
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
