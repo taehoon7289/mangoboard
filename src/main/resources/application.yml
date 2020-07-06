@@ -8,24 +8,31 @@ spring:
       schema: schema
   jooq:
     sql-dialect: mysql
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      format_sql: true
-      ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#  jpa:
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    open-in-view: false
+#    show-sql: true
+#    hibernate:
+#      format_sql: true
+#      ddl-auto: update
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   jwt:
     secret: '!mangomango@'
 
 logging:
   level:
+    root: INFO
     org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
+     jooq: DEBUG
+     hibernate:
+       SQL: DEBUG
+       type:
+         descriptor:
+           sql:
+             BasicBinder: TRACE
+     io:
+       swagger:
+         models:
+           parameters:
+             AbstractSerializableParameter: ERROR
