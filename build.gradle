@@ -26,6 +26,7 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    compile 'org.springframework.boot:spring-boot-starter-validation:2.3.1.RELEASE'
 
     jooqRuntime 'mysql:mysql-connector-java' // jdbc driver 의존성 추가.
     compile 'org.jooq:jooq'
@@ -44,6 +45,9 @@ dependencies {
     compile 'io.springfox:springfox-swagger2:2.9.2'
     compile 'io.springfox:springfox-swagger-ui:2.9.2'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+
+
 }
 
 test {
