@@ -1,27 +1,35 @@
 package com.present.mango.service.user;
 
 import com.present.mango.common.exception.CustomException;
+import com.present.mango.form.board.BoardSaveForm;
 import com.present.mango.hibernate.dao.BoardDao;
 import com.present.mango.hibernate.entity.BoardEntity;
+import com.present.mango.jooq.command.user.BoardCommand;
+import com.present.mango.jooq.generate.tables.pojos.TblBoardBean;
+import com.present.mango.jooq.query.BoardQuery;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Result;
 import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 public class BoardService {
 
-  BoardDao boardDao;
-  PasswordEncoder passwordEncoder;
+  BoardQuery boardQuery;
+  BoardCommand boardCommand;
 
-  BoardService(BoardDao boardDao,
-               PasswordEncoder passwordEncoder) {
-    this.boardDao = boardDao;
-    this.passwordEncoder = passwordEncoder;
+  BoardService(BoardQuery boardQuery,
+               BoardCommand boardCommand) {
+    this.boardQuery = boardQuery;
+    this.boardCommand = boardCommand;
   }
 
   /**
@@ -33,22 +41,28 @@ public class BoardService {
    * @return
    * @throws CustomException
    */
-  public Page getBoards(Integer page, Integer limit,
-                            HttpServletRequest request, HttpServletResponse response) throws CustomException {
-    Pageable pageable = PageRequest.of(page,limit, Sort.by(Sort.Direction.DESC,"boardNo"));
-    Page<BoardEntity> result = boardDao.findAll(pageable);
-    log.info("pageResultpageResult :: {}", result);
-    return result;
+  public List getBoards(Integer page, Integer limit,
+                        HttpServletRequest request, HttpServletResponse response) throws CustomException {
+    Result result = boardQuery.selectBoards(new HashMap());
+    return result.intoMaps();
   }
 
-  public Integer setBoard(String title,String contents) {
-    BoardEntity boardEntity = new BoardEntity();
-    boardEntity.setTitle(title);
-    boardEntity.setContents(contents);
-    boardEntity.setUserNo(2);
-    boardEntity.setImage("dsfdsfasdfsdfsafdd");
-    boardDao.save(boardEntity);
-    return boardEntity.getBoardNo();
+  /**
+   * 게시물 등록/수정
+   * @param userNo
+   * @param boardSaveForm
+   * @return
+   */
+  public Integer postBoard(Integer userNo, BoardSaveForm boardSaveForm) {
+    TblBoardBean tblBoardBean = new TblBoardBean();
+    tblBoardBean.setBoardNo(boardSaveForm.getBoardNo());
+    tblBoardBean.setTitle(boardSaveForm.getTitle());
+    tblBoardBean.setContents(boardSaveForm.getContents());
+    tblBoardBean.setUserNo(2);
+    tblBoardBean.setImage("dsfdsfasdfsdfsafdd");
+    tblBoardBean.setUserNo(userNo);
+    Integer boardNo = boardCommand.upsertBoard(tblBoardBean);
+    return boardNo;
   }
 
 }

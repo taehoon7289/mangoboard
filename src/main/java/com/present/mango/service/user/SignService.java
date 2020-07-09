@@ -6,7 +6,7 @@ import com.present.mango.common.exception.CustomException;
 import com.present.mango.common.token.JwtTokenProvider;
 import com.present.mango.form.sign.UserSignInForm;
 import com.present.mango.form.sign.UserSignUpForm;
-import com.present.mango.jooq.command.UserCommand;
+import com.present.mango.jooq.command.user.UserCommand;
 import com.present.mango.jooq.generate.tables.pojos.TblUserBean;
 import com.present.mango.jooq.generate.tables.records.TblUserRecord;
 import com.present.mango.jooq.query.UserQuery;
@@ -28,22 +28,16 @@ public class SignService {
   UserCommand userCommand;
   UserQuery userQuery;
   PasswordEncoder passwordEncoder;
-  JwtTokenProvider jwtTokenProvider;
   SignLogic signLogic;
-  UserValidation userValidation;
 
   SignService(UserCommand userCommand,
               UserQuery userQuery,
               PasswordEncoder passwordEncoder,
-              JwtTokenProvider jwtTokenProvider,
-              SignLogic signLogic,
-              UserValidation userValidation) {
+              SignLogic signLogic) {
     this.userCommand = userCommand;
     this.userQuery = userQuery;
     this.passwordEncoder = passwordEncoder;
-    this.jwtTokenProvider = jwtTokenProvider;
     this.signLogic = signLogic;
-    this.userValidation = userValidation;
   }
 
   /**
@@ -76,7 +70,8 @@ public class SignService {
   public UserTokenDTO signUp(UserSignUpForm userSignUpForm,
                              HttpServletRequest request, HttpServletResponse response) throws CustomException {
     // 회원가입 유효성 체크
-    signLogic.validParametersForSignUp(userSignUpForm);
+//    INFO: 테스트로 인한 주석처리
+//    signLogic.validParametersForSignUp(userSignUpForm);
     // 아이디 중복 체크
     if (userQuery.selectCountById(userSignUpForm.getId()) > 0) {
       throw new CustomException(UserConstException.ALREADY_ID);

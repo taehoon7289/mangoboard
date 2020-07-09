@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalHandlerException {
 
   /**
    * CostomException 처리
@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(CustomException.class)
   public ResultDTO handlerCustomException(CustomException e) {
+    log.warn("{} :: {}", e.getCode(), e.getMessage());
     return new ResultDTO(e.getCode(),e.getMessage(),null);
   }
 
@@ -30,7 +31,6 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResultDTO handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {
     BindingResult bindingResult = e.getBindingResult();
-
     StringBuilder builder = new StringBuilder();
     for (FieldError fieldError : bindingResult.getFieldErrors()) {
       builder.append("[");
@@ -41,6 +41,7 @@ public class GlobalExceptionHandler {
       builder.append(fieldError.getRejectedValue());
       builder.append("]");
     }
+    log.warn("{} :: {}", -9999, builder.toString());
     return new ResultDTO(-9999, builder.toString(), null);
   }
 }

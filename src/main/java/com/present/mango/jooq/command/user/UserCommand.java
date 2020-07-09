@@ -1,4 +1,4 @@
-package com.present.mango.jooq.command;
+package com.present.mango.jooq.command.user;
 
 import com.present.mango.common.constant.exception.UserConstException;
 import com.present.mango.common.exception.CustomException;
