@@ -11,5 +11,4 @@ public class BoardSaveForm {
   @NotEmpty String title;
   @NotEmpty String contents;
   String image;
-  MultipartFile imageFile;
 }

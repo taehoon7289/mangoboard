@@ -38,4 +38,18 @@ public class BoardQuery {
     return select.fetch();
   }
 
+  /**
+   * 게시물 가져오기
+   * @param params
+   * @return
+   */
+  public Record selectBoard(Map params) {
+    SelectConditionStep select = context.select()
+            .from(tblBoard)
+            .where();
+//    select = setCondition(select, params);
+    select.orderBy(tblBoard.boardNo.desc());
+    return select.fetchAny();
+  }
+
 }

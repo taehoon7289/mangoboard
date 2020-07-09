@@ -8,6 +8,7 @@ import com.present.mango.jooq.command.user.BoardCommand;
 import com.present.mango.jooq.generate.tables.pojos.TblBoardBean;
 import com.present.mango.jooq.query.BoardQuery;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Record;
 import org.jooq.Result;
 import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -54,12 +55,18 @@ public class BoardService {
    * @return
    */
   public Integer postBoard(Integer userNo, BoardSaveForm boardSaveForm) {
+    // 수정권한 체크
+    if (boardSaveForm.getBoardNo() > 0) {
+      Map params = new HashMap();
+      params.put("userNo",userNo);
+      params.put("boardNo",boardSaveForm.getBoardNo());
+      Record record = boardQuery.selectBoard(params);
+    }
     TblBoardBean tblBoardBean = new TblBoardBean();
     tblBoardBean.setBoardNo(boardSaveForm.getBoardNo());
     tblBoardBean.setTitle(boardSaveForm.getTitle());
     tblBoardBean.setContents(boardSaveForm.getContents());
-    tblBoardBean.setUserNo(2);
-    tblBoardBean.setImage("dsfdsfasdfsdfsafdd");
+    tblBoardBean.setImage(boardSaveForm.getImage());
     tblBoardBean.setUserNo(userNo);
     Integer boardNo = boardCommand.upsertBoard(tblBoardBean);
     return boardNo;
