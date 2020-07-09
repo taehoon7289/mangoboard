@@ -2,7 +2,7 @@ package com.present.mango.common.token;
 
 // import 생략
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.present.mango.common.dto.user.UserTokenDTO;
+import com.present.mango.dto.user.token.UserTokenDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

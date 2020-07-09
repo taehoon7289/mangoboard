@@ -1,4 +1,4 @@
-package com.present.mango.common.dto;
+package com.present.mango.dto;
 
 import lombok.Data;
 

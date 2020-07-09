@@ -1,9 +1,10 @@
 package com.present.mango.controller.user;
 
 
-import com.present.mango.common.dto.ResultDTO;
-import com.present.mango.common.dto.user.UserTokenDTO;
+import com.present.mango.dto.ResultDTO;
+import com.present.mango.dto.user.token.UserTokenDTO;
 import com.present.mango.common.exception.CustomException;
+import com.present.mango.form.sign.UserSignForm;
 import com.present.mango.service.user.SignService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -33,15 +34,10 @@ public class SignController {
   }
 
   @PostMapping(value = "/")
-  public ResultDTO signUp(@RequestParam String id,
-                          @RequestParam String password,
-                          @RequestParam String name,
-                          @RequestParam String gender,
-                          @RequestParam String phone,
-                          @RequestParam(required = false) String ip,
+  public ResultDTO signUp(@RequestBody UserSignForm userSignForm,
                           HttpServletRequest request, HttpServletResponse response) throws CustomException {
     UserTokenDTO result = null;
-    result = signService.signUp(id,password,name,gender,phone,ip,request,response);
+    result = signService.signUp(userSignForm,request,response);
     return new ResultDTO(1,"",result);
   }
 

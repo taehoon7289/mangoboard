@@ -2,10 +2,9 @@ package com.present.mango.service.user.logic;
 
 import com.present.mango.common.constant.code.UserCode;
 import com.present.mango.common.constant.exception.UserConstException;
-import com.present.mango.common.dto.user.UserTokenDTO;
+import com.present.mango.dto.user.token.UserTokenDTO;
 import com.present.mango.common.exception.CustomException;
 import com.present.mango.common.token.JwtTokenProvider;
-import com.present.mango.hibernate.entity.UserEntity;
 import com.present.mango.jooq.generate.tables.pojos.TblUserBean;
 import com.present.mango.validation.UserValidation;
 import lombok.extern.slf4j.Slf4j;

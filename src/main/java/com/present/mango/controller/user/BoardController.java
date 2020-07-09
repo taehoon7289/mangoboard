@@ -1,7 +1,7 @@
 package com.present.mango.controller.user;
 
 
-import com.present.mango.common.dto.ResultDTO;
+import com.present.mango.dto.ResultDTO;
 import com.present.mango.common.exception.CustomException;
 import com.present.mango.common.token.JwtTokenProvider;
 import com.present.mango.service.user.BoardService;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/user/board")
+@RequestMapping(value = "/api/user/boards")
 public class BoardController {
 
   BoardService boardService;

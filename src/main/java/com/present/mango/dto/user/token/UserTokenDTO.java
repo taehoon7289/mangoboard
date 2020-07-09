@@ -1,4 +1,4 @@
-package com.present.mango.common.dto.user;
+package com.present.mango.dto.user.token;
 
 import lombok.Data;
 
