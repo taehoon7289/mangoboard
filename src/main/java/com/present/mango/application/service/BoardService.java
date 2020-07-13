@@ -1,13 +1,14 @@
 package com.present.mango.application.service;
 
 import com.present.mango.application.form.board.BoardSaveForm;
+import com.present.mango.common.constant.exception.BoardConstException;
 import com.present.mango.common.exception.CustomException;
-import com.present.mango.jooq.command.BoardCommand;
-import com.present.mango.jooq.generate.tables.pojos.TblBoardMasterBean;
-import com.present.mango.jooq.generate.tables.pojos.TblUserMasterBean;
-import com.present.mango.jooq.generate.tables.records.TblBoardMasterRecord;
-import com.present.mango.jooq.generate.tables.records.TblUserMasterRecord;
-import com.present.mango.jooq.query.BoardQuery;
+import com.present.mango.application.domain.jooq.command.BoardCommand;
+import com.present.mango.application.domain.jooq.generate.tables.pojos.TblBoardMasterBean;
+import com.present.mango.application.domain.jooq.generate.tables.pojos.TblUserMasterBean;
+import com.present.mango.application.domain.jooq.generate.tables.records.TblBoardMasterRecord;
+import com.present.mango.application.domain.jooq.generate.tables.records.TblUserMasterRecord;
+import com.present.mango.application.domain.jooq.query.BoardQuery;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,7 @@ public class BoardService {
    * @return
    * @throws CustomException
    */
+  @Transactional
   public Page getBoardList(Pageable pageable, String searchText) {
     Map params = new HashMap();
     params.put("searchText",searchText);
@@ -56,13 +59,15 @@ public class BoardService {
    * @param boardSaveForm
    * @return
    */
-  public Integer saveBoard(Integer userNo, BoardSaveForm boardSaveForm) {
+  @Transactional
+  public Integer saveBoard(Integer userNo, BoardSaveForm boardSaveForm) throws CustomException {
     // 수정권한 체크
     if (boardSaveForm.getBoardNo() > 0) {
       Map params = new HashMap();
       params.put("userNo",userNo);
       params.put("boardNo",boardSaveForm.getBoardNo());
-      Record record = boardQuery.selectBoard(params);
+      boardQuery.selectRecordBoard(params)
+              .orElseThrow(() -> new CustomException(BoardConstException.INVALID_BOARD_NO));
     }
     TblBoardMasterBean tblBoardMasterBean = new TblBoardMasterBean();
     tblBoardMasterBean.setBoardNo(boardSaveForm.getBoardNo());

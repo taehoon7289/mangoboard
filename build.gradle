@@ -154,7 +154,7 @@ jooq {
                 fluentSetters = false
             }
             target {
-                packageName = 'com.present.mango.jooq.generate'
+                packageName = 'com.present.mango.application.domain.jooq.generate'
                 directory = 'src/main/java'
                 encoding = 'UTF-8'
             }

@@ -4,7 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-src/main/java/com/present/mango/jooq/generate
+src/main/java/com/present/mango/application/domain/jooq/generate
 
 ### STS ###
 .apt_generated

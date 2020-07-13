@@ -1,7 +1,7 @@
 package com.present.mango.application.service.business;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.present.mango.application.domain.token.TokenDTO;
+import com.present.mango.application.dto.token.TokenDTO;
 import com.present.mango.application.form.sign.UserSignInForm;
 import com.present.mango.application.form.sign.UserSignUpForm;
 import com.present.mango.application.validation.UserValidation;
@@ -10,12 +10,11 @@ import com.present.mango.common.constant.code.UserCode;
 import com.present.mango.common.constant.exception.UserConstException;
 import com.present.mango.common.exception.CustomException;
 import com.present.mango.common.token.JwtTokenProvider;
-import com.present.mango.jooq.generate.tables.pojos.TblUserMasterBean;
+import com.present.mango.application.domain.jooq.generate.tables.pojos.TblUserMasterBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

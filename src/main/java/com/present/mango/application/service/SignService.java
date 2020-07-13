@@ -1,15 +1,15 @@
 package com.present.mango.application.service;
 
-import com.present.mango.application.domain.token.TokenDTO;
+import com.present.mango.application.dto.token.TokenDTO;
 import com.present.mango.application.form.sign.UserSignInForm;
 import com.present.mango.application.form.sign.UserSignUpForm;
 import com.present.mango.application.service.business.SignBusiness;
 import com.present.mango.common.constant.exception.UserConstException;
 import com.present.mango.common.exception.CustomException;
-import com.present.mango.jooq.command.UserCommand;
-import com.present.mango.jooq.generate.tables.pojos.TblUserMasterBean;
-import com.present.mango.jooq.generate.tables.records.TblUserMasterRecord;
-import com.present.mango.jooq.query.UserQuery;
+import com.present.mango.application.domain.jooq.command.UserCommand;
+import com.present.mango.application.domain.jooq.generate.tables.pojos.TblUserMasterBean;
+import com.present.mango.application.domain.jooq.generate.tables.records.TblUserMasterRecord;
+import com.present.mango.application.domain.jooq.query.UserQuery;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
@@ -56,7 +56,7 @@ public class SignService {
    * @return
    * @throws CustomException
    */
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional(rollbackFor = Exception.class, noRollbackFor = CustomException.class)
   public TokenDTO signUp(UserSignUpForm userSignUpForm,
                          HttpServletRequest request, HttpServletResponse response) throws CustomException {
     // 회원가입 유효성 체크

@@ -1,6 +1,6 @@
-package com.present.mango.hibernate.dao;
+package com.present.mango.application.domain.hibernate.dao;
 
-import com.present.mango.hibernate.entity.BoardEntity;
+import com.present.mango.application.domain.hibernate.entity.BoardEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

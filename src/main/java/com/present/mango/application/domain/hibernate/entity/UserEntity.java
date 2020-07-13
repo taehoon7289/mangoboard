@@ -1,4 +1,4 @@
-package com.present.mango.hibernate.entity;
+package com.present.mango.application.domain.hibernate.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

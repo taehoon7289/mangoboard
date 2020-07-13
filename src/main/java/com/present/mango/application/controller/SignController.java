@@ -2,7 +2,7 @@ package com.present.mango.application.controller;
 
 
 import com.present.mango.common.constant.dto.ResultDTO;
-import com.present.mango.application.domain.token.TokenDTO;
+import com.present.mango.application.dto.token.TokenDTO;
 import com.present.mango.common.exception.CustomException;
 import com.present.mango.application.form.sign.UserSignInForm;
 import com.present.mango.application.form.sign.UserSignUpForm;

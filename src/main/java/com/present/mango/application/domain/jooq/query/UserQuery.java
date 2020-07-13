@@ -1,6 +1,6 @@
-package com.present.mango.jooq.query;
+package com.present.mango.application.domain.jooq.query;
 
-import com.present.mango.jooq.generate.tables.TblUserMaster;
+import com.present.mango.application.domain.jooq.generate.tables.TblUserMaster;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;

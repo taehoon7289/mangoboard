@@ -1,8 +1,8 @@
-package com.present.mango.jooq.command;
+package com.present.mango.application.domain.jooq.command;
 
-import com.present.mango.jooq.generate.tables.TblBoardMaster;
-import com.present.mango.jooq.generate.tables.pojos.TblBoardMasterBean;
-import com.present.mango.jooq.generate.tables.records.TblBoardMasterRecord;
+import com.present.mango.application.domain.jooq.generate.tables.TblBoardMaster;
+import com.present.mango.application.domain.jooq.generate.tables.pojos.TblBoardMasterBean;
+import com.present.mango.application.domain.jooq.generate.tables.records.TblBoardMasterRecord;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.InsertOnDuplicateSetStep;

@@ -1,6 +1,6 @@
-package com.present.mango.hibernate.dao;
+package com.present.mango.application.domain.hibernate.dao;
 
-import com.present.mango.hibernate.entity.UserEntity;
+import com.present.mango.application.domain.hibernate.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

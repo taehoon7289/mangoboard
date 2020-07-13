@@ -1,4 +1,4 @@
-package com.present.mango.application.domain.token;
+package com.present.mango.application.dto.token;
 
 import lombok.Data;
 
