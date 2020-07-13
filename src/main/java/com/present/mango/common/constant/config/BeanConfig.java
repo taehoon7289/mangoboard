@@ -1,9 +1,8 @@
 package com.present.mango.common.constant.config;
 
-import com.present.mango.application.domain.jooq.generate.tables.TblBoard;
-import com.present.mango.application.domain.jooq.generate.tables.TblUser;
-import com.present.mango.application.domain.jooq.generate.tables.daos.TblBoardDao;
-import com.present.mango.application.domain.jooq.generate.tables.daos.TblUserDao;
+import com.present.mango.application.domain.jooq.generate.tables.TblBoardMaster;
+import com.present.mango.application.domain.jooq.generate.tables.TblFileMaster;
+import com.present.mango.application.domain.jooq.generate.tables.TblUserMaster;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,23 +17,18 @@ public class BeanConfig {
   }
 
   @Bean
-  public TblUser tbluser() {
-    return TblUser.TblUser;
+  public TblUserMaster tblUserMaster() {
+    return TblUserMaster.TblUserMaster;
   }
 
   @Bean
-  public TblBoard tblBoard() {
-    return TblBoard.TblBoard;
+  public TblBoardMaster tblBoardMaster() {
+    return TblBoardMaster.TblBoardMaster;
   }
 
   @Bean
-  public TblUserDao tblUserDao() {
-    return new TblUserDao();
-  }
-
-  @Bean
-  public TblBoardDao tblBoardDao() {
-    return new TblBoardDao();
+  public TblFileMaster tblFileMaster() {
+    return TblFileMaster.TblFileMaster;
   }
 
 }

@@ -18,7 +18,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,7 @@ public class BoardService {
 
   BoardQuery boardQuery;
   BoardCommand boardCommand;
+  FileService fileService;
 
   /**
    * 게시글 리스트 (페이징 처리)
@@ -68,6 +71,12 @@ public class BoardService {
       params.put("boardNo",boardSaveForm.getBoardNo());
       boardQuery.selectRecordBoard(params)
               .orElseThrow(() -> new CustomException(BoardConstException.INVALID_BOARD_NO));
+    }
+    if (!ObjectUtils.isEmpty(boardSaveForm.getImageFiles())) {
+      List<File> files = fileService.makeFiles(boardSaveForm.getImageFiles());
+      log.info("filesfiles :: {}", files);
+      boardSaveForm.setImages(files.stream()
+              .map(file -> file.getAbsolutePath()).collect(Collectors.toList()));
     }
     TblBoardMasterBean tblBoardMasterBean = new TblBoardMasterBean();
     tblBoardMasterBean.setBoardNo(boardSaveForm.getBoardNo());
