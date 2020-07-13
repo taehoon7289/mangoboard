@@ -1,4 +1,4 @@
-package com.present.mango.validation;
+package com.present.mango.application.validation;
 
 import org.springframework.stereotype.Component;
 

@@ -1,55 +1,48 @@
-package com.present.mango.service.user.logic;
+package com.present.mango.application.service.business;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.present.mango.application.domain.token.TokenDTO;
+import com.present.mango.application.form.sign.UserSignInForm;
+import com.present.mango.application.form.sign.UserSignUpForm;
+import com.present.mango.application.validation.UserValidation;
 import com.present.mango.common.constant.code.TokenCode;
 import com.present.mango.common.constant.code.UserCode;
 import com.present.mango.common.constant.exception.UserConstException;
-import com.present.mango.dto.user.token.UserTokenDTO;
 import com.present.mango.common.exception.CustomException;
 import com.present.mango.common.token.JwtTokenProvider;
-import com.present.mango.form.sign.UserSignInForm;
-import com.present.mango.form.sign.UserSignUpForm;
-import com.present.mango.jooq.generate.tables.pojos.TblUserBean;
-import com.present.mango.validation.UserValidation;
+import com.present.mango.jooq.generate.tables.pojos.TblUserMasterBean;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Slf4j
+@AllArgsConstructor
 @Component
-public class SignLogic {
+public class SignBusiness {
 
   PasswordEncoder passwordEncoder;
   UserValidation userValidation;
   JwtTokenProvider jwtTokenProvider;
 
-  public SignLogic(PasswordEncoder passwordEncoder,
-                   UserValidation userValidation,
-                   JwtTokenProvider jwtTokenProvider) {
-    this.passwordEncoder = passwordEncoder;
-    this.userValidation = userValidation;
-    this.jwtTokenProvider = jwtTokenProvider;
-  }
-
-
   /**
    * User Token 생성 (private)
    *
-   * @param userTokenDTO
+   * @param tokenDTO
    * @param request
    * @param response
    */
-  private void addHeaderUserToken(UserTokenDTO userTokenDTO,
+  private void addHeaderUserToken(TokenDTO tokenDTO,
                                   HttpServletRequest request, HttpServletResponse response) {
     ObjectMapper objectMapper = new ObjectMapper();
-    Map data = objectMapper.convertValue(userTokenDTO, Map.class);
+    Map data = objectMapper.convertValue(tokenDTO, Map.class);
     // token 생성
     String token = jwtTokenProvider.createToken(TokenCode.type.USER.getValue(), data);
-    log.info("token :: {}", token);
     response.setHeader("X-Auth-Token", token);
   }
 
@@ -57,44 +50,44 @@ public class SignLogic {
   /**
    * userToken 추가후 userTokenDTO 리턴
    *
-   * @param tblUserBean
+   * @param tblUserMasterBean
    * @param request
    * @param response
    * @return
    */
-  public UserTokenDTO addUserToken(TblUserBean tblUserBean,
-                                   HttpServletRequest request, HttpServletResponse response) {
-    UserTokenDTO userTokenDTO = this.createUserTokenDTO(tblUserBean);
-    this.addHeaderUserToken(this.createUserTokenDTO(tblUserBean), request, response);
-    return userTokenDTO;
+  public TokenDTO addUserToken(TblUserMasterBean tblUserMasterBean,
+                               HttpServletRequest request, HttpServletResponse response) {
+    TokenDTO tokenDTO = this.createUserTokenDTO(tblUserMasterBean);
+    this.addHeaderUserToken(this.createUserTokenDTO(tblUserMasterBean), request, response);
+    return tokenDTO;
   }
 
 
   /**
-   * UserTokenDTO 생성 (private)
+   * TokenDTO 생성 (private)
    *
-   * @param tblUserBean
+   * @param tblUserMasterBean
    * @return
    */
-  private UserTokenDTO createUserTokenDTO(TblUserBean tblUserBean) {
-    UserTokenDTO userTokenDTO = new UserTokenDTO();
-    userTokenDTO.setUserNo(tblUserBean.getUserNo());
-    userTokenDTO.setUserName(tblUserBean.getName());
-    userTokenDTO.setStatus(tblUserBean.getStatus());
-    return userTokenDTO;
+  private TokenDTO createUserTokenDTO(TblUserMasterBean tblUserMasterBean) {
+    TokenDTO tokenDTO = new TokenDTO();
+    tokenDTO.setUserNo(tblUserMasterBean.getUserNo());
+    tokenDTO.setUserName(tblUserMasterBean.getName());
+    tokenDTO.setStatus(tblUserMasterBean.getStatus());
+    return tokenDTO;
   }
 
   /**
    * 회원 SignIn 유효성 체크
    *
-   * @param tblUserBean
+   * @param tblUserMasterBean
    * @return
    */
-  public void validUserEntityForSignIn(UserSignInForm userSignInForm, TblUserBean tblUserBean) throws CustomException {
-    if (!passwordEncoder.matches(userSignInForm.getPassword(), tblUserBean.getPassword())) {
+  public void validUserEntityForSignIn(UserSignInForm userSignInForm, TblUserMasterBean tblUserMasterBean) throws CustomException {
+    if (!passwordEncoder.matches(userSignInForm.getPassword(), tblUserMasterBean.getPassword())) {
       throw new CustomException(UserConstException.NO_MATCH_PASSWORD);
     }
-    if (tblUserBean.getStatus() != UserCode.status.ACTIVE.getValue()) {
+    if (tblUserMasterBean.getStatus() != UserCode.status.ACTIVE.getValue()) {
       throw new CustomException(UserConstException.INACTIVE_STATUS);
     }
   }

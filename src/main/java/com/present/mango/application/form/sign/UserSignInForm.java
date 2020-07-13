@@ -1,4 +1,4 @@
-package com.present.mango.form.sign;
+package com.present.mango.application.form.sign;
 
 import lombok.Data;
 

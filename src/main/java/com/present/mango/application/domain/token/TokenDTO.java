@@ -1,9 +1,9 @@
-package com.present.mango.dto.user.token;
+package com.present.mango.application.domain.token;
 
 import lombok.Data;
 
 @Data
-public class UserTokenDTO {
+public class TokenDTO {
   Integer userNo;
   String userName;
   Integer status;

@@ -2,6 +2,7 @@ package com.present.mango.common.constant.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -16,6 +17,7 @@ public class SwaggerConfig {
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2)
+            .ignoredParameterTypes(Pageable.class)
             .apiInfo(apiInfo()) //기본정보
             .select()
             .apis(RequestHandlerSelectors.any())  //주소접근 옵션

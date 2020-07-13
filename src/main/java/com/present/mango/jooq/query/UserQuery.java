@@ -1,25 +1,20 @@
 package com.present.mango.jooq.query;
 
-import com.present.mango.jooq.generate.tables.TblUser;
+import com.present.mango.jooq.generate.tables.TblUserMaster;
+import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
-@Component
+@AllArgsConstructor
+@Repository
 public class UserQuery {
 
-  DSLContext context;
-  TblUser tblUser;
-
-  public UserQuery(DSLContext context,
-                   TblUser tblUser){
-    this.context = context;
-    this.tblUser = tblUser;
-  }
+  protected DSLContext context;
+  protected TblUserMaster tblUserMaster;
 
   /**
    * 아이디로 조회
@@ -27,8 +22,8 @@ public class UserQuery {
    * @return
    */
   public Optional<Record> selectUserById(String id) {
-    SelectConditionStep select = context.select().from(tblUser).where();
-    select.and(tblUser.id.eq(id));
+    SelectConditionStep select = context.select().from(tblUserMaster).where();
+    select.and(tblUserMaster.id.eq(id));
     return select.fetchOptional();
   }
 
@@ -37,9 +32,9 @@ public class UserQuery {
    * @param id
    * @return
    */
-  public Integer selectCountById(String id) {
-    SelectConditionStep<?> select = context.selectCount().from(tblUser).where();
-    select.and(tblUser.id.eq(id));
+  public Integer selectUserCountById(String id) {
+    SelectConditionStep<?> select = context.selectCount().from(tblUserMaster).where();
+    select.and(tblUserMaster.id.eq(id));
     return select.fetchOneInto(Integer.class);
   }
 
@@ -48,9 +43,9 @@ public class UserQuery {
    * @param phone
    * @return
    */
-  public Integer selectCountByPhone(String phone) {
-    SelectConditionStep<?> select = context.selectCount().from(tblUser).where();
-    select.and(tblUser.phone.eq(phone));
+  public Integer selectUserCountByPhone(String phone) {
+    SelectConditionStep<?> select = context.selectCount().from(tblUserMaster).where();
+    select.and(tblUserMaster.phone.eq(phone));
     return select.fetchOneInto(Integer.class);
   }
 }
