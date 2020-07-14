@@ -40,7 +40,8 @@ public class SignService {
    */
   public TokenDTO signIn(UserSignInForm userSignInForm,
                          HttpServletRequest request, HttpServletResponse response) throws CustomException {
-    Record record = userQuery.selectUserById(userSignInForm.getId()).orElseThrow(() -> new CustomException(UserConstException.NO_MATCH_ID));
+    Record record = userQuery.selectUserById(userSignInForm.getId())
+            .orElseThrow(() -> new CustomException(UserConstException.NO_MATCH_ID));
     TblUserMasterBean tblUserMasterBean = record.into(TblUserMasterRecord.class).into(TblUserMasterBean.class);
     // SignIn 유효성 체크
     signBusiness.validUserEntityForSignIn(userSignInForm,tblUserMasterBean);
