@@ -3,7 +3,7 @@ package com.present.mango.application.service;
 import com.present.mango.application.dto.token.TokenDTO;
 import com.present.mango.application.form.sign.UserSignInForm;
 import com.present.mango.application.form.sign.UserSignUpForm;
-import com.present.mango.application.service.business.SignBusiness;
+import com.present.mango.application.service.function.SignFunc;
 import com.present.mango.common.constant.exception.UserConstException;
 import com.present.mango.common.exception.CustomException;
 import com.present.mango.application.domain.jooq.command.UserCommand;
@@ -28,7 +28,7 @@ public class SignService {
   UserCommand userCommand;
   UserQuery userQuery;
   PasswordEncoder passwordEncoder;
-  SignBusiness signBusiness;
+  SignFunc signFunc;
 
   /**
    * 회원 sign in
@@ -44,9 +44,9 @@ public class SignService {
             .orElseThrow(() -> new CustomException(UserConstException.NO_MATCH_ID));
     TblUserMasterBean tblUserMasterBean = record.into(TblUserMasterRecord.class).into(TblUserMasterBean.class);
     // SignIn 유효성 체크
-    signBusiness.validUserEntityForSignIn(userSignInForm,tblUserMasterBean);
+    signFunc.validUserEntityForSignIn(userSignInForm,tblUserMasterBean);
     // userToken 추가
-    return signBusiness.addUserToken(tblUserMasterBean,request,response);
+    return signFunc.addUserToken(tblUserMasterBean,request,response);
   }
 
   /**
@@ -83,7 +83,7 @@ public class SignService {
             .orElseThrow(() -> new CustomException(UserConstException.NO_SIGN_UP));
     tblUserMasterBean = tblUserMasterRecord.into(TblUserMasterBean.class);
     // userToken 추가
-    return signBusiness.addUserToken(tblUserMasterBean,request,response);
+    return signFunc.addUserToken(tblUserMasterBean,request,response);
   }
 
 }

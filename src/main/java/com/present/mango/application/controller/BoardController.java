@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Map;
 
+@CrossOrigin("*")
 @Slf4j
 @AllArgsConstructor
 @RestController
@@ -26,11 +27,11 @@ public class BoardController {
   JwtTokenProvider jwtTokenProvider;
 
   @GetMapping(value = "/")
-  public ResultDTO getBoardList(@RequestHeader(value = "X-Auth-Token") String token,
-                                @PageableDefault(page = 0, size = 20) Pageable pageable,
+  public ResultDTO getBoardList(@RequestHeader(value = "X-Auth-Token", required = false) String token,
+                                @PageableDefault(page = 0, size = 10) Pageable pageable,
                                 @RequestParam(defaultValue = "") String searchText) {
-    Map data = jwtTokenProvider.getData(token);
-    Integer userNo = (Integer) data.getOrDefault("userNo", -1);
+//    Map data = jwtTokenProvider.getData(token);
+//    Integer userNo = (Integer) data.getOrDefault("userNo", -1);
     Page result = boardService.getBoardList(pageable,searchText);
     return new ResultDTO(1,"",result);
   }

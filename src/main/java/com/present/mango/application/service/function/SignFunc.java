@@ -1,4 +1,4 @@
-package com.present.mango.application.service.business;
+package com.present.mango.application.service.function;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.present.mango.application.dto.token.TokenDTO;
@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @AllArgsConstructor
 @Component
-public class SignBusiness {
+public class SignFunc {
 
   PasswordEncoder passwordEncoder;
   UserValidation userValidation;

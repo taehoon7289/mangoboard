@@ -1,6 +1,7 @@
 package com.present.mango.common.exception;
 
 import com.present.mango.common.constant.dto.ResultDTO;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -12,12 +13,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
+@AllArgsConstructor
 @RestControllerAdvice
 public class GlobalHandlerException {
-
-  @Autowired
-  private MessageSource messageSource;
-
 
   /**
    * CostomException 처리

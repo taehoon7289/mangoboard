@@ -24,17 +24,17 @@ public class UserHandlerInterceptor extends HandlerInterceptorAdapter {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     log.info("UserHandlerInterceptor > preHandle");
-    String token = jwtTokenProvider.resolveToken(request);
-    if (ObjectUtils.isEmpty(token)) {
-      log.info("token 비어있음!!!!!!!!!!!");
-      response.setStatus(HttpStatus.UNAUTHORIZED.value());
-      return false;
-    }
-    if (!jwtTokenProvider.validateToken(token)) {
-      log.info("token 만료!!!!!!!!!!!!!!");
-      response.setStatus(HttpStatus.UNAUTHORIZED.value());
-      return false;
-    }
+//    String token = jwtTokenProvider.resolveToken(request);
+//    if (ObjectUtils.isEmpty(token)) {
+//      log.info("token 비어있음!!!!!!!!!!!");
+//      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//      return false;
+//    }
+//    if (!jwtTokenProvider.validateToken(token)) {
+//      log.info("token 만료!!!!!!!!!!!!!!");
+//      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//      return false;
+//    }
     return true;
   }
 
