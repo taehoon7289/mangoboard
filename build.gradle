@@ -54,10 +54,8 @@ test {
     useJUnitPlatform()
 }
 
-task {
-    deleteGenerate(type: Delete) {
-        delete "src/main/java/com/present/mango/application/domain/jooq/generate/"
-    }
+task deleteGenerate(type: Delete) {
+    delete "src/main/java/com/present/mango/application/domain/jooq/generate/"
 }
 
 jooq {
