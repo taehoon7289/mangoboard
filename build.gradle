@@ -63,11 +63,11 @@ task {
 jooq {
     version = '3.13.1'
     edition = 'OSS'
-    generateSchemaSourceOnCompilation = true
+    generateSchemaSourceOnCompilation = false
     local(sourceSets.main) {
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = 'jdbc:mysql://localhost:3306/'
+            url = 'jdbc:mysql://34.64.112.159:3306/'
             user = 'root'
             password = '!present2@'
             properties {

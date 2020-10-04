@@ -1,5 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://34.64.112.159:3306?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: '!present2@'
+    hikari:
+      schema: schema
+
 const:
-  base-dir: 'D:\uploadFiles'
+  base-dir: 'C:\Users\taehoon.kim\dev\uploadFiles'
 
 server:
   port: 58080

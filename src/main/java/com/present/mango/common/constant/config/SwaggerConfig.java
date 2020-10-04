@@ -31,8 +31,6 @@ public class SwaggerConfig {
             .description("Mango")
             .termsOfServiceUrl("http://www-03.ibm.com/software/sla/sladb.nsf/sla/bm?Open")
             .contact("taehoon7289@gmail.com")
-//            .license("Apache License Version 2.0")
-//            .licenseUrl("https://github.com/IBM-Bluemix/news-aggregator/blob/master/LICENSE")
             .version("1.0")
             .build();
   }
