@@ -1,9 +1,9 @@
 spring:
   profiles:
-    active: local
+    active: local, gcp
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql8.0://mysql8.0:3306?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: '!present2@'
     hikari:

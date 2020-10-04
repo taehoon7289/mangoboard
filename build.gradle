@@ -54,6 +54,12 @@ test {
     useJUnitPlatform()
 }
 
+task {
+    deleteGenerate(type: Delete) {
+        delete "src/main/java/com/present/mango/application/domain/jooq/generate/"
+    }
+}
+
 jooq {
     version = '3.13.1'
     edition = 'OSS'
@@ -61,7 +67,110 @@ jooq {
     local(sourceSets.main) {
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = 'jdbc:mysql://mysql:3306/'
+            url = 'jdbc:mysql://localhost:3306/'
+            user = 'root'
+            password = '!present2@'
+            properties {
+                property {
+                    key = 'ssl'
+                    value = 'true'
+                }
+            }
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            strategy {
+                name = null
+                matchers {
+                    schemas {
+                        schema {
+                            schemaClass {
+                                transform = 'PASCAL'
+                                expression = '$0'
+                            }
+                            schemaIdentifier {
+                                transform = 'PASCAL'
+                                expression = '$0'
+                            }
+                        }
+                    }
+                    tables {
+                        table {
+                            tableClass {
+                                transform = 'PASCAL'
+                                expression = '$0'
+                            }
+                            tableIdentifier {
+                                transform = 'PASCAL'
+                                expression = '$0'
+                            }
+                            recordClass {
+                                transform = 'PASCAL'
+                                expression = '$0_Record'
+                            }
+                            pojoClass {
+                                transform = 'PASCAL'
+                                expression = '$0_Bean'
+                            }
+                        }
+                    }
+                    fields {
+                        field {
+                            fieldIdentifier {
+                                transform = 'CAMEL'
+                                expression = '$0'
+                            }
+                            fieldMember {
+                                transform = 'CAMEL'
+                                expression = '$0'
+                            }
+                            fieldSetter {
+                                transform = 'CAMEL'
+                                expression = 'set_$0'
+                            }
+                            fieldGetter {
+                                transform = 'CAMEL'
+                                expression = 'get_$0'
+                            }
+                        }
+                    }
+                }
+            }
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                schemata {
+                    schema {
+                        inputSchema = 'mango' // DATABASE 설정
+                    }
+                }
+            }
+            generate {
+                relations = true
+                deprecated = true
+                instanceFields = true
+                generatedAnnotation = true
+                records = true
+                pojos = true
+                immutablePojos = false
+                interfaces = false
+                daos = false
+                jpaAnnotations = false
+                validationAnnotations = false
+                globalObjectReferences = true
+                fluentSetters = false
+            }
+            target {
+                packageName = 'com.present.mango.application.domain.jooq.generate'
+                directory = 'src/main/java'
+                encoding = 'UTF-8'
+            }
+        }
+    }
+
+    gcp(sourceSets.main) {
+        jdbc {
+            driver = 'com.mysql.cj.jdbc.Driver'
+            url = 'jdbc:mysql://mysql8.0:3306/'
             user = 'root'
             password = '!present2@'
             properties {

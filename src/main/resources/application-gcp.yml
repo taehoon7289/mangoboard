@@ -1,0 +1,5 @@
+const:
+  base-dir: '/home/uploadFiles'
+
+server:
+  port: 58080
