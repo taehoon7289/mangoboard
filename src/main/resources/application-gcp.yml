@@ -8,7 +8,7 @@ spring:
       schema: schema
 
 const:
-  base-dir: '/home/uploadFiles'
+  base-dir: '/app/uploadFiles'
 
 server:
   port: 58080
