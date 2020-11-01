@@ -18,6 +18,7 @@ spring:
 const:
   open-weathermap-url: 'https://api.openweathermap.org/data/2.5/onecall'
   open-weathermap-app-id: 'a5c6b2491ef8a7b7d340299797f576df'
+  thumbnail-size: 100,480
 
 logging:
   level:
