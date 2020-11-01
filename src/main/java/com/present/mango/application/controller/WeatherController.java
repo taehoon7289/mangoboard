@@ -25,15 +25,17 @@ import java.util.Map;
 @RequestMapping(value = "/api/user/weathers")
 public class WeatherController {
 
-  JwtTokenProvider jwtTokenProvider;
-  WeatherService weatherService;
+    JwtTokenProvider jwtTokenProvider;
+    WeatherService weatherService;
 
-  @GetMapping(value = "/")
-  public ResultDTO getOneCall(@RequestHeader(value = "X-Auth-Token", required = false) String token) {
+    @GetMapping(value = "/")
+    public ResultDTO getOneCall(@RequestHeader(value = "X-Auth-Token", required = false) String token,
+                                @RequestParam(defaultValue = "36") Double lat,
+                                @RequestParam(defaultValue = "128") Double lon) {
 //    Map data = jwtTokenProvider.getData(token);
 //    Integer userNo = (Integer) data.getOrDefault("userNo", -1);
-    Map result = weatherService.getOneCall();
-    return new ResultDTO(1,"",result);
-  }
+        Map result = weatherService.getOneCall(lat, lon);
+        return new ResultDTO(1, "", result);
+    }
 
 }

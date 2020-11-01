@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,25 +31,34 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-@AllArgsConstructor
 @Service
 public class WeatherService {
 
-  WeatherFunc weatherFunc;
+  @Value(value = "${const.open-weathermap-app-id}")
+  private String appId;
+
+  @Value(value = "${const.open-weathermap-url}")
+  private String url;
+
+  private final WeatherFunc weatherFunc;
+
+  public WeatherService(WeatherFunc weatherFunc) {
+    this.weatherFunc = weatherFunc;
+  }
 
   /**
    * 날씨 데이터 받아오기
    * @return
    */
-  public Map getOneCall() {
+  public Map getOneCall(Double lat, Double lon) {
     Map<String, String> parameters = new HashMap<>();
-    parameters.put("lat", "36");
-    parameters.put("lon", "128");
+    parameters.put("lat", lat.toString());
+    parameters.put("lon", lon.toString());
     parameters.put("units", "metric");
-    parameters.put("appid", "a5c6b2491ef8a7b7d340299797f576df");
+    parameters.put("appid", appId);
     Map result = new HashMap();
     try {
-      result = weatherFunc.sendGet("https://api.openweathermap.org/data/2.5/onecall", parameters);
+      result = weatherFunc.sendGet(url, parameters);
     } catch (IOException e) {
       e.printStackTrace();
     }
