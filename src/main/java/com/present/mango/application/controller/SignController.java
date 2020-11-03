@@ -24,7 +24,7 @@ public class SignController {
   SignService signService;
 
   @PostMapping(value = "/in")
-  public ResultDTO signIn(@ModelAttribute @Valid UserSignInForm userSignInForm,
+  public ResultDTO signIn(@RequestBody @Valid UserSignInForm userSignInForm,
                           HttpServletRequest request, HttpServletResponse response) throws CustomException {
     TokenDTO result = null;
     result = signService.signIn(userSignInForm,request,response);
@@ -32,7 +32,7 @@ public class SignController {
   }
 
   @PostMapping(value = "/up")
-  public ResultDTO signUp(@ModelAttribute @Valid UserSignUpForm userSignUpForm,
+  public ResultDTO signUp(@RequestBody @Valid UserSignUpForm userSignUpForm,
                           HttpServletRequest request, HttpServletResponse response) throws CustomException {
     TokenDTO result = null;
     result = signService.signUp(userSignUpForm,request,response);

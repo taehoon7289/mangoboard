@@ -38,7 +38,7 @@ public class BoardController {
 
   @PostMapping(value = "/")
   public ResultDTO saveBoard(@RequestHeader(value = "X-Auth-Token") String token,
-                             @ModelAttribute @Valid BoardSaveForm boardSaveForm) throws CustomException {
+                             @RequestBody @Valid BoardSaveForm boardSaveForm) throws CustomException {
     log.info("test :: {}", boardSaveForm);
     Map data = jwtTokenProvider.getData(token);
     Integer userNo = (Integer) data.getOrDefault("userNo", -1);
