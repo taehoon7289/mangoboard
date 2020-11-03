@@ -75,6 +75,7 @@ public class BoardService {
     if (!ObjectUtils.isEmpty(boardSaveForm.getImageFiles())) {
       List<File> files = fileService.makeFiles(boardSaveForm.getImageFiles());
       log.info("filesfiles :: {}", files);
+
       boardSaveForm.setImages(files.stream()
               .map(file -> file.getAbsolutePath()).collect(Collectors.toList()));
     }
