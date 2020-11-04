@@ -71,7 +71,6 @@ public class BoardService {
       params.put("boardNo",boardSaveForm.getBoardNo());
       boardQuery.selectRecordBoard(params)
               .orElseThrow(() -> new CustomException(BoardConstException.INVALID_BOARD_NO));
-
     }
     if (!ObjectUtils.isEmpty(boardSaveForm.getImageFiles())) {
       List<File> files = fileService.makeFiles(boardSaveForm.getImageFiles());
