@@ -171,7 +171,7 @@ jooq {
     gcp(sourceSets.main) {
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = 'jdbc:mysql://mysql8.0:3306/'
+            url = 'jdbc:mysql://127.0.0.1:3306/'
             user = 'root'
             password = '!present2@'
             properties {
