@@ -68,7 +68,7 @@ jooq {
     local(sourceSets.main) {
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = 'jdbc:mysql://127.0.0.1:3306/'
+            url = 'jdbc:mysql://127.0.0.1:3306/?serverTimezone=Asia/Seoul'
             user = 'root'
             password = '!present2@'
             properties {
@@ -171,7 +171,7 @@ jooq {
     gcp(sourceSets.main) {
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = 'jdbc:mysql://127.0.0.1:3306/'
+            url = 'jdbc:mysql://127.0.0.1:3306/?serverTimezone=Asia/Seoul'
             user = 'root'
             password = '!present2@'
             properties {
